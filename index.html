@@ -326,6 +326,7 @@ function finalizar(){
       b.style.border='1px solid rgba(74,222,128,0.3)';
       b.style.color='#4ade80';
       b.textContent='✉️ Correo enviado con link del audio';
+      document.getElementById('final-img').classList.remove('hide');
     }).catch(function(err){
       var b=document.getElementById('email-box');
       b.style.background='rgba(248,113,113,0.08)';
