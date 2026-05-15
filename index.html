@@ -1,3 +1,6 @@
+Aquí está — copia todo:
+
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -157,7 +160,7 @@ input:focus{border-color:#38bdf8;outline:none}
     <h2 style="color:#4ade80;font-size:18px;font-weight:700;margin-top:8px">REGISTRO COMPLETADO</h2>
   </div>
   <div id="email-box" class="status" style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);color:#38bdf8">
-    ⏳ Enviando correo...
+    ⏳ Subiendo audio y enviando correo...
   </div>
   <div style="background:#071020;border:1px solid #1e3a5f;border-radius:12px;padding:14px;margin-bottom:16px">
     <div class="sum-row"><span style="color:#64748b">👤 Nombre</span><span id="r-nombre" style="color:#cbd5e1;font-weight:600"></span></div>
@@ -168,6 +171,10 @@ input:focus{border-color:#38bdf8;outline:none}
     <div style="margin-top:12px">
       <p style="color:#64748b;font-size:12px;margin-bottom:6px">🎙️ Audio grabado</p>
       <audio id="r-audio" controls style="width:100%"></audio>
+    </div>
+    <div id="r-link-box" class="hide" style="margin-top:12px;padding:10px;background:#0a1f35;border-radius:8px">
+      <p style="color:#64748b;font-size:12px;margin-bottom:4px">🔗 Link del audio:</p>
+      <a id="r-link" href="#" target="_blank" style="color:#38bdf8;font-size:12px;word-break:break-all"></a>
     </div>
   </div>
   <button class="btn-main" onclick="nuevo()">NUEVO REGISTRO</button>
@@ -184,6 +191,7 @@ var audioURL=null;
 var recInterval=null;
 var recSeconds=0;
 var grabando=false;
+var UPLOADCARE_KEY='eb898c32984c078c46dc';
 
 (function(){
   var imgs=[document.getElementById('s1'),document.getElementById('s2'),document.getElementById('s3')];
@@ -295,6 +303,21 @@ function resetGrabacion(){
   document.getElementById('audio-prev').src='';
 }
 
+function subirAudio(blob,callback){
+  var formData=new FormData();
+  formData.append('UPLOADCARE_PUB_KEY',UPLOADCARE_KEY);
+  formData.append('UPLOADCARE_STORE','1');
+  formData.append('file',blob,'audio_bioscan.webm');
+  fetch('https://upload.uploadcare.com/base/',{method:'POST',body:formData})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var url='https://ucarecdn.com/'+data.file+'/';
+    callback(url);
+  }).catch(function(){
+    callback(null);
+  });
+}
+
 function finalizar(){
   if(!audioBlob){alert('Por favor graba un audio primero.');return;}
   document.getElementById('r-nombre').textContent=datos.nombre+' '+datos.apellido;
@@ -305,25 +328,34 @@ function finalizar(){
   document.getElementById('r-audio').src=audioURL||'';
   document.getElementById('paso2').classList.add('hide');
   document.getElementById('paso3').classList.remove('hide');
-  emailjs.init({publicKey:'sT7KjHpdArHuMeFJA'});
-  emailjs.send('service_bioscan','template_sf0fpwq',{
-    nombre:datos.nombre,apellido:datos.apellido,edad:datos.edad,
-    peso:datos.peso+' lbs',altura:datos.altura+' cm',
-    imc:(imcVal||'—')+' — '+(imcLbl||''),
-    fecha:new Date().toLocaleString('es-ES'),
-    to_email:'literalmarketingventas@gmail.com'
-  }).then(function(){
-    var b=document.getElementById('email-box');
-    b.style.background='rgba(74,222,128,0.08)';
-    b.style.border='1px solid rgba(74,222,128,0.3)';
-    b.style.color='#4ade80';
-    b.textContent='✉️ Correo enviado a literalmarketingventas@gmail.com';
-  }).catch(function(err){
-    var b=document.getElementById('email-box');
-    b.style.background='rgba(248,113,113,0.08)';
-    b.style.border='1px solid rgba(248,113,113,0.3)';
-    b.style.color='#f87171';
-    b.textContent='⚠️ Error: '+JSON.stringify(err);
+  subirAudio(audioBlob,function(audioLink){
+    var linkTexto=audioLink||'No se pudo subir el audio';
+    if(audioLink){
+      document.getElementById('r-link').href=audioLink;
+      document.getElementById('r-link').textContent=audioLink;
+      document.getElementById('r-link-box').classList.remove('hide');
+    }
+    emailjs.init({publicKey:'sT7KjHpdArHuMeFJA'});
+    emailjs.send('service_bioscan','template_sf0fpwq',{
+      nombre:datos.nombre,apellido:datos.apellido,edad:datos.edad,
+      peso:datos.peso+' lbs',altura:datos.altura+' cm',
+      imc:(imcVal||'—')+' — '+(imcLbl||''),
+      fecha:new Date().toLocaleString('es-ES'),
+      audio_link:linkTexto,
+      to_email:'literalmarketingventas@gmail.com'
+    }).then(function(){
+      var b=document.getElementById('email-box');
+      b.style.background='rgba(74,222,128,0.08)';
+      b.style.border='1px solid rgba(74,222,128,0.3)';
+      b.style.color='#4ade80';
+      b.textContent='✉️ Correo enviado con link del audio';
+    }).catch(function(err){
+      var b=document.getElementById('email-box');
+      b.style.background='rgba(248,113,113,0.08)';
+      b.style.border='1px solid rgba(248,113,113,0.3)';
+      b.style.color='#f87171';
+      b.textContent='⚠️ Error: '+JSON.stringify(err);
+    });
   });
 }
 
@@ -332,9 +364,13 @@ function nuevo(){
   resetGrabacion();
   ['fn','fa','fe','fp','fh'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('imc-box').classList.add('hide');
+  document.getElementById('r-link-box').classList.add('hide');
   document.getElementById('paso3').classList.add('hide');
   document.getElementById('paso1').classList.remove('hide');
 }
 </script>
 </body>
 </html>
+```
+
+Copia todo, pégalo en GitHub reemplazando el código anterior y haz **Commit changes**.
