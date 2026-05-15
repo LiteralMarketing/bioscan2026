@@ -237,7 +237,7 @@ function finalizar() {
   document.getElementById('paso2').classList.add('hide');
   document.getElementById('paso3').classList.remove('hide');
 
-  emailjs.init('sT7KjHpdArHuMeFJA');
+  emailjs.init({publicKey: 'sT7KjHpdArHuMeFJA'});
   emailjs.send('service_literal', 'template_sf0fpwq', {
     nombre: datos.nombre,
     apellido: datos.apellido,
