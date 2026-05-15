@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BIO SCAN</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#050b18;font-family:Arial,sans-serif;color:#e2e8f0;padding:20px;min-height:100vh}
+h1{font-size:28px;font-weight:900;text-align:center;background:linear-gradient(135deg,#38bdf8,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.15em;margin:16px 0 4px}
+.sub{text-align:center;color:#334155;font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px}
+.card{background:#0a1223;border:1px solid #1e3a5f;border-radius:16px;padding:24px;max-width:440px;margin:0 auto}
+.lbl{display:block;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;margin-top:14px}
+input[type=text],input[type=number]{width:100%;padding:13px;background:#071020;border:1.5px solid #1e3a5f;border-radius:10px;color:#e2e8f0;font-size:16px;display:block}
+input:focus{border-color:#38bdf8;outline:none}
+.row2{display:flex;gap:10px}
+.row2>div{flex:1}
+.btn-main{display:block;width:100%;padding:16px;margin-top:20px;background:linear-gradient(135deg,#38bdf8,#6366f1);border:none;border-radius:12px;color:#fff;font-size:17px;font-weight:700;letter-spacing:.05em;cursor:pointer}
+.btn-white{display:block;width:100%;padding:16px;margin-top:8px;background:#ffffff;border:none;border-radius:12px;color:#050b18;font-size:16px;font-weight:700;cursor:pointer}
+.btn-green{display:block;width:100%;padding:16px;margin-top:12px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:12px;color:#fff;font-size:18px;font-weight:700;cursor:pointer}
+.btn-back{display:block;width:100%;padding:12px;margin-top:10px;background:transparent;border:1.5px solid #1e3a5f;border-radius:12px;color:#64748b;font-size:14px;cursor:pointer}
+.hide{display:none!important}
+.ok-box{background:rgba(74,222,128,0.07);border:1.5px solid rgba(74,222,128,0.3);border-radius:12px;padding:14px;margin-top:12px}
+.ok-box audio{width:100%;margin-top:8px}
+.sum-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #0d1f35}
+.status{border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:14px}
+.imc{display:flex;justify-content:space-between;align-items:center;background:#071020;border:1px solid #1e3a5f;border-radius:10px;padding:10px 14px;margin-top:12px}
+.step{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;border:2px solid #1e3a5f;color:#64748b;flex-shrink:0}
+.dot.on{background:linear-gradient(135deg,#38bdf8,#6366f1);border:none;color:#fff}
+.dot.done{background:#22c55e;border:none;color:#fff}
+.line{flex:1;height:2px;background:#1e3a5f}
+.line.on{background:linear-gradient(90deg,#38bdf8,#6366f1)}
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div style="text-align:center;padding-top:10px">
+  <svg width="52" height="52" viewBox="0 0 64 64" fill="none" style="display:block;margin:0 auto">
+    <defs>
+      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#6366f1"/></linearGradient>
+      <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" stroke="url(#g1)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+    <circle cx="32" cy="32" r="22" stroke="url(#g1)" stroke-width="2"/>
+    <line x1="32" y1="8" x2="32" y2="16" stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="32" y1="48" x2="32" y2="56" stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="8" y1="32" x2="16" y2="32" stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="48" y1="32" x2="56" y2="32" stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M16 32 L21 32 L24 24 L28 40 L32 28 L35 36 L38 32 L48 32" stroke="url(#g2)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="32" cy="32" r="3" fill="url(#g1)"/>
+    <path d="M6 14 L6 6 L14 6" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+    <path d="M50 6 L58 6 L58 14" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+    <path d="M6 50 L6 58 L14 58" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+    <path d="M58 50 L58 58 L50 58" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+  </svg>
+  <h1>BIO SCAN</h1>
+  <p class="sub">Registro Biométrico</p>
+</div>
+
+<!-- ===== PASO 1 ===== -->
+<div id="paso1" class="card">
+  <div class="step">
+    <div class="dot on">1</div>
+    <span style="font-size:12px;color:#94a3b8">Datos</span>
+    <div class="line"></div>
+    <div class="dot">2</div>
+    <span style="font-size:12px;color:#334155">Archivo</span>
+  </div>
+
+  <label class="lbl">Nombre</label>
+  <input type="text" id="fn" placeholder="Juan"/>
+
+  <label class="lbl">Apellido</label>
+  <input type="text" id="fa" placeholder="García"/>
+
+  <label class="lbl">Edad (años)</label>
+  <input type="number" id="fe" placeholder="30"/>
+
+  <div class="row2">
+    <div>
+      <label class="lbl">Peso (lbs)</label>
+      <input type="number" id="fp" placeholder="154" oninput="calcImc()"/>
+    </div>
+    <div>
+      <label class="lbl">Altura (cm)</label>
+      <input type="number" id="fh" placeholder="170" oninput="calcImc()"/>
+    </div>
+  </div>
+
+  <div id="imc-box" class="imc hide">
+    <span style="color:#64748b;font-size:13px">IMC</span>
+    <span id="imc-val" style="font-size:15px;font-weight:700"></span>
+  </div>
+
+  <p id="msg1" style="color:#f87171;font-size:13px;margin-top:10px;display:none">Por favor completa todos los campos.</p>
+
+  <button class="btn-main" onclick="irPaso2()">CONTINUAR →</button>
+</div>
+
+<!-- ===== PASO 2 ===== -->
+<div id="paso2" class="card hide">
+  <div class="step">
+    <div class="dot done">✓</div>
+    <span style="font-size:12px;color:#64748b">Datos</span>
+    <div class="line on"></div>
+    <div class="dot on">2</div>
+    <span style="font-size:12px;color:#94a3b8">Archivo</span>
+  </div>
+
+  <p style="color:#64748b;font-size:14px;line-height:1.7;text-align:center;margin-bottom:20px">
+    Por favor graba un audio o video de<br>
+    <strong style="color:#e2e8f0;font-size:16px">10 segundos</strong><br>
+    y súbelo aquí.
+  </p>
+
+  <input type="file" id="fi" accept="audio/*,video/*" onchange="archivoSeleccionado(this)">
+
+  <!-- Resultado — oculto hasta que se sube -->
+  <div id="archivo-ok" class="ok-box hide">
+    <p style="color:#4ade80;font-size:13px;font-weight:600">✓ Archivo cargado</p>
+    <p id="archivo-nombre" style="color:#94a3b8;font-size:12px;margin-top:4px;word-break:break-all"></p>
+    <audio id="audio-prev" controls></audio>
+    <button class="btn-back" style="margin-top:8px" onclick="cambiarArchivo()">🔄 Cambiar archivo</button>
+    <button class="btn-green" onclick="finalizar()">✅ FINALIZAR — Enviar reporte</button>
+  </div>
+
+  <button class="btn-back" onclick="irPaso1()">← Volver</button>
+</div>
+
+<!-- ===== PASO 3 RESUMEN ===== -->
+<div id="paso3" class="card hide">
+  <div class="step">
+    <div class="dot done">✓</div>
+    <span style="font-size:12px;color:#64748b">Datos</span>
+    <div class="line on"></div>
+    <div class="dot done">✓</div>
+    <span style="font-size:12px;color:#64748b">Archivo</span>
+  </div>
+
+  <div style="text-align:center;margin-bottom:16px">
+    <div style="font-size:42px">✅</div>
+    <h2 style="color:#4ade80;font-size:18px;font-weight:700;margin-top:8px">REGISTRO COMPLETADO</h2>
+  </div>
+
+  <div id="email-box" class="status" style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);color:#38bdf8">
+    ⏳ Enviando correo...
+  </div>
+
+  <div style="background:#071020;border:1px solid #1e3a5f;border-radius:12px;padding:14px;margin-bottom:16px">
+    <div class="sum-row"><span style="color:#64748b">👤 Nombre</span><span id="r-nombre" style="color:#cbd5e1;font-weight:600"></span></div>
+    <div class="sum-row"><span style="color:#64748b">🎂 Edad</span><span id="r-edad" style="color:#cbd5e1;font-weight:600"></span></div>
+    <div class="sum-row"><span style="color:#64748b">⚖️ Peso</span><span id="r-peso" style="color:#cbd5e1;font-weight:600"></span></div>
+    <div class="sum-row"><span style="color:#64748b">📏 Altura</span><span id="r-altura" style="color:#cbd5e1;font-weight:600"></span></div>
+    <div class="sum-row" style="border:none"><span style="color:#64748b">📊 IMC</span><span id="r-imc" style="color:#cbd5e1;font-weight:600"></span></div>
+    <div style="margin-top:12px">
+      <p style="color:#64748b;font-size:12px;margin-bottom:6px">🎙️ Archivo de voz</p>
+      <audio id="r-audio" controls style="width:100%"></audio>
+    </div>
+  </div>
+
+  <button class="btn-main" onclick="nuevo()">NUEVO REGISTRO</button>
+</div>
+
+<script>
+var datos = {};
+var imcVal = null;
+var imcLbl = null;
+var archivoURL = null;
+
+function calcImc() {
+  var p = parseFloat(document.getElementById('fp').value);
+  var h = parseFloat(document.getElementById('fh').value);
+  var box = document.getElementById('imc-box');
+  if (p > 0 && h > 0) {
+    var v = ((p * 0.453592) / Math.pow(h / 100, 2)).toFixed(1);
+    imcVal = v;
+    imcLbl = v < 18.5 ? 'Bajo peso' : v < 25 ? 'Normal' : v < 30 ? 'Sobrepeso' : 'Obesidad';
+    var c = v < 18.5 ? '#60a5fa' : v < 25 ? '#4ade80' : v < 30 ? '#fbbf24' : '#f87171';
+    document.getElementById('imc-val').innerHTML = '<span style="color:' + c + '">' + v + ' — ' + imcLbl + '</span>';
+    box.classList.remove('hide');
+  } else {
+    box.classList.add('hide');
+    imcVal = null; imcLbl = null;
+  }
+}
+
+function irPaso2() {
+  var n = document.getElementById('fn').value.trim();
+  var a = document.getElementById('fa').value.trim();
+  var e = document.getElementById('fe').value.trim();
+  var p = document.getElementById('fp').value.trim();
+  var h = document.getElementById('fh').value.trim();
+  var msg = document.getElementById('msg1');
+  if (!n || !a || !e || !p || !h) {
+    msg.style.display = 'block';
+    return;
+  }
+  msg.style.display = 'none';
+  datos = { nombre: n, apellido: a, edad: e, peso: p, altura: h };
+  document.getElementById('paso1').classList.add('hide');
+  document.getElementById('paso2').classList.remove('hide');
+  document.getElementById('paso3').classList.add('hide');
+}
+
+function irPaso1() {
+  document.getElementById('paso1').classList.remove('hide');
+  document.getElementById('paso2').classList.add('hide');
+  document.getElementById('paso3').classList.add('hide');
+}
+
+function archivoSeleccionado(inp) {
+  var f = inp.files[0];
+  if (!f) return;
+  archivoURL = URL.createObjectURL(f);
+  document.getElementById('archivo-nombre').textContent = '📎 ' + f.name;
+  document.getElementById('audio-prev').src = archivoURL;
+  document.getElementById('archivo-ok').classList.remove('hide');
+}
+
+function cambiarArchivo() {
+  document.getElementById('fi').value = '';
+  document.getElementById('audio-prev').src = '';
+  archivoURL = null;
+  document.getElementById('archivo-ok').classList.add('hide');
+}
+
+function finalizar() {
+  document.getElementById('r-nombre').textContent = datos.nombre + ' ' + datos.apellido;
+  document.getElementById('r-edad').textContent = datos.edad + ' años';
+  document.getElementById('r-peso').textContent = datos.peso + ' lbs';
+  document.getElementById('r-altura').textContent = datos.altura + ' cm';
+  document.getElementById('r-imc').textContent = (imcVal || '—') + ' — ' + (imcLbl || '');
+  document.getElementById('r-audio').src = archivoURL || '';
+  document.getElementById('paso2').classList.add('hide');
+  document.getElementById('paso3').classList.remove('hide');
+
+  emailjs.init('sT7KjHpdArHuMeFJA');
+  emailjs.send('service_literal', 'template_sf0fpwq', {
+    nombre: datos.nombre,
+    apellido: datos.apellido,
+    edad: datos.edad,
+    peso: datos.peso + ' lbs',
+    altura: datos.altura + ' cm',
+    imc: (imcVal || '—') + ' — ' + (imcLbl || ''),
+    fecha: new Date().toLocaleString('es-ES'),
+    to_email: 'literalmarketingventas@gmail.com'
+  })
+  .then(function() {
+    var b = document.getElementById('email-box');
+    b.style.background = 'rgba(74,222,128,0.08)';
+    b.style.border = '1px solid rgba(74,222,128,0.3)';
+    b.style.color = '#4ade80';
+    b.textContent = '✉️ Correo enviado a literalmarketingventas@gmail.com';
+  })
+  .catch(function(err) {
+    var b = document.getElementById('email-box');
+    b.style.background = 'rgba(248,113,113,0.08)';
+    b.style.border = '1px solid rgba(248,113,113,0.3)';
+    b.style.color = '#f87171';
+    b.textContent = '⚠️ Error: ' + JSON.stringify(err);
+  });
+}
+
+function nuevo() {
+  datos = {}; imcVal = null; imcLbl = null; archivoURL = null;
+  ['fn','fa','fe','fp','fh'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('fi').value = '';
+  document.getElementById('imc-box').classList.add('hide');
+  document.getElementById('archivo-ok').classList.add('hide');
+  document.getElementById('paso3').classList.add('hide');
+  document.getElementById('paso1').classList.remove('hide');
+}
+</script>
+</body>
+</html>
