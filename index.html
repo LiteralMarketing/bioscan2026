@@ -1,4 +1,4 @@
-Aquí está — copia todo:
+Aquí está todo:
 
 ```html
 <!DOCTYPE html>
@@ -10,8 +10,6 @@ Aquí está — copia todo:
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#050b18;font-family:Arial,sans-serif;color:#e2e8f0;padding:20px;min-height:100vh}
-h1{font-size:28px;font-weight:900;text-align:center;background:linear-gradient(135deg,#38bdf8,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.15em;margin:16px 0 4px}
-.sub{text-align:center;color:#334155;font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px}
 .card{background:#0a1223;border:1px solid #1e3a5f;border-radius:16px;padding:24px;max-width:440px;margin:0 auto}
 .lbl{display:block;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;margin-top:14px}
 input[type=text],input[type=number]{width:100%;padding:13px;background:#071020;border:1.5px solid #1e3a5f;border-radius:10px;color:#e2e8f0;font-size:16px;display:block}
@@ -61,27 +59,8 @@ input:focus{border-color:#38bdf8;outline:none}
 </div>
 
 <!-- HEADER -->
-<div style="text-align:center;padding-top:10px">
-  <svg width="52" height="52" viewBox="0 0 64 64" fill="none" style="display:block;margin:0 auto">
-    <defs>
-      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#6366f1"/></linearGradient>
-      <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient>
-    </defs>
-    <circle cx="32" cy="32" r="30" stroke="url(#g1)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
-    <circle cx="32" cy="32" r="22" stroke="url(#g1)" stroke-width="2"/>
-    <line x1="32" y1="8" x2="32" y2="16" stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/>
-    <line x1="32" y1="48" x2="32" y2="56" stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/>
-    <line x1="8" y1="32" x2="16" y2="32" stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/>
-    <line x1="48" y1="32" x2="56" y2="32" stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/>
-    <path d="M16 32 L21 32 L24 24 L28 40 L32 28 L35 36 L38 32 L48 32" stroke="url(#g2)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <circle cx="32" cy="32" r="3" fill="url(#g1)"/>
-    <path d="M6 14 L6 6 L14 6" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
-    <path d="M50 6 L58 6 L58 14" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
-    <path d="M6 50 L6 58 L14 58" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
-    <path d="M58 50 L58 58 L50 58" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
-  </svg>
-  <h1>BIO SCAN</h1>
-  <p class="sub">Registro Biométrico</p>
+<div style="text-align:center;padding-top:10px;margin-bottom:10px">
+  <img src="logo.png" style="width:220px;max-width:90%;display:block;margin:0 auto">
 </div>
 
 <!-- PASO 1 -->
@@ -311,7 +290,7 @@ function subirAudio(blob,callback){
   fetch('https://upload.uploadcare.com/base/',{method:'POST',body:formData})
   .then(function(r){return r.json();})
   .then(function(data){
-  var url='https://1tzm6zqtfj.ucarecd.net/'+data.file+'/';
+    var url='https://1tzm6zqtfj.ucarecd.net/'+data.file+'/';
     callback(url);
   }).catch(function(){
     callback(null);
@@ -373,4 +352,4 @@ function nuevo(){
 </html>
 ```
 
-Copia todo, pégalo en GitHub reemplazando el código anterior y haz **Commit changes**.
+Copia todo, pégalo en GitHub y haz **Commit changes**. ¡Y luego a descansar! 😄
