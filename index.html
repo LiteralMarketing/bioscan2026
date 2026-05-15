@@ -311,7 +311,7 @@ function subirAudio(blob,callback){
   fetch('https://upload.uploadcare.com/base/',{method:'POST',body:formData})
   .then(function(r){return r.json();})
   .then(function(data){
-    var url='https://ucarecdn.com/'+data.file+'/';
+  var url='https://ucarecdn.com/'+data.file+'/audio_bioscan.webm';
     callback(url);
   }).catch(function(){
     callback(null);
